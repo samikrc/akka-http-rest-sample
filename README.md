@@ -5,7 +5,7 @@
 This is a sample codebase for a set of REST api and user management using akka-http. The code provides the backend (and the front end - HTML files are also included) for a small app for editing some model code, which is behind a login page. The code covers a few things which needed some research:
 
 * Sending session tokens and devKey for accessing API through cookies
-* The devKey is also sent through header (presumably for using through curl-type clients)
+* The devKey is also sent through header (presumably for using through curl-type clients, without using cookies)
 
 On the code side, shows some example of:
 
@@ -32,3 +32,4 @@ Don't use this code in production - this is just a sample. Lot of gaps exist in 
 ## References
 
 - akka-http-session at https://github.com/softwaremill/akka-http-session/
+- Form based website authentication at https://stackoverflow.com/questions/549/the-definitive-guide-to-form-based-website-authentication
