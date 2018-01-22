@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="jquery.min.js"></script>
+</head>
+    <body>
+        <form action="http://localhost:3118/doLogin" method="post" data-form-title="Login to myOptCloud" id="loginForm">
+
+            <input type="text" name="email" id="form1-1m-email" value="" style="display: none;" />
+            <div>
+                <label class="form-control-label" for="form1-1m-uname">Email<span class="form-asterisk">*</span></label>
+                <input type="text" class="form-control" name="userName" required="" id="form1-1m-uname">
+            </div>
+            <div>
+                <label class="form-control-label" for="form1-1m-pass">Password<span class="form-asterisk">*</span></label>
+                <input type="password" class="form-control" name="password" required="" id="form1-1m-pass">
+            </div>
+            <div><button type="submit" class="btn btn-primary">LOGIN</button></div>
+        </form>
+
+        <script>
+            // Clean localstorage variable stored after login
+            window.localStorage.removeItem("modelKey");
+        </script>
+    </body>
+</html>

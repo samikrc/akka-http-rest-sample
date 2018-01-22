@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Editor</title>
+    <script src="jquery.min.js"></script>
+    <script>
+    </script>
+    <script>
+    var apiBaseUrl = "http://localhost:3030/v1/";
+    var umBaseUrl = "http://localhost:3118/";
+    var loginName = "";
+   /**
+     * Method to show the page for entering/editing new model
+     */
+    function editNewModel()
+    {
+        // Pick up the modelKey from localstorage
+        var modelKey = window.localStorage.getItem("modelKey");
+        if(modelKey != null && modelKey != "")
+        {
+            // Get the model details using REST URL
+            $.ajax({
+                url: apiBaseUrl + 'getModel',
+                type: "POST",
+                crossDomain: true,
+                // Needs the following to be set to pass on the cookies
+                xhrFields: { withCredentials: true  },
+                data: JSON.stringify({ "modelKey": modelKey }),
+                dataType: 'json',
+                success: function(response)
+                {
+                    $("#modelName").val(response.modelName);
+                    $("#modelCode").val(response.code);
+                },
+                error: function(xhr, status, error){ alert("Error in retrieving model: " + status); }
+            })
+        }
+        else
+        {
+            // Reset the forms
+            $("#formModelInput")[0].reset();
+        }
+        if(loginName != "")
+            $("#login").html("You are logged in as <b>" + loginName + "</b>");
+    }
+
+    function saveModel()
+    {
+        $.ajax({
+            url: apiBaseUrl + 'setModel',
+            type: "POST",
+            crossDomain: true,
+            // Needs the following to be set to pass on the cookies
+            xhrFields: { withCredentials: true  },
+            data: JSON.stringify({ 
+                "modelName": $("#modelName").val(),
+                "code": $("#modelCode").val()
+            }),
+            dataType: 'json',
+            success: function(response)
+            {
+                // Save the new modelKey in localstorage
+                window.localStorage.setItem("modelKey", response.modelKey);
+                $("#modelSaveStatus").html("<b>Model Saved. Model key: " + response.modelKey + "</b>");
+            },
+            error: function(xhr, status, error){ alert("Error in saving model: " + status); }
+        })
+    }
+        
+    /*
+    // Populate components on pagecreate
+    $(document).on("pagecreate", function (event) 
+    { 
+        editNewModel();
+    });
+    */
+
+    $.ajax({
+        url: umBaseUrl + "getLogin",
+        type: "POST",
+        crossDomain: true,
+        // Needs the following to be set to pass on the cookies
+        xhrFields: { withCredentials: true  },
+        success: function(response)
+        {
+            if(response.loginName == "")
+                window.location.href = "http://localhost/login.html";
+            else
+            {
+                loginName = response.loginName;
+                editNewModel();
+            }
+        },
+        error: function(xhr, status, error){ alert("Error in retrieving model: " + status); }
+    });        
+    </script>
+</head>
+<body>
+    <div id="login"></div>
+    <form id="formModelInput">
+        <table width="60%" cellspacing="5px">
+        <tr>
+            <td><label for="modelName">Model Name:</label></td>
+            <td><input name="modelName" id="modelName" value="" type="text" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><label for="modelCode">Enter your model code (no data section):</label></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <textarea name="modelCode" id="modelCode" rows="10" cols="85"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" id="btnSaveModel" value="Save New Model" onclick="saveModel();" /></td>
+        </tr>
+        <tr><td colspan="2"><span id="modelSaveStatus"></span></td></tr>
+        </table>
+    </form>
+    <br />
+    <form action="http://localhost:3118/doLogout" method="post">
+        <input type="submit" value="Logout" class="btn btn-primary" />
+    </form>
+
+</body>
+</html>
