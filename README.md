@@ -24,3 +24,11 @@ The rest of the stack can be initialized as follows:
 2. Run RESTWebServer.scala in src/main/scala/com/ilabs/dsi/restapi
 3. Run UMWebServer.scala in src/main/scala/com/ilabs/dsi/usermgmt/
 4. Go to http://localhost/login.html
+
+## Warning
+
+Don't use this code in production - this is just a sample. Lot of gaps exist in the code with respect to security.
+
+## References
+
+- akka-http-session at https://github.com/softwaremill/akka-http-session/
